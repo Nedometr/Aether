@@ -31,6 +31,7 @@ data class ColorTheme(
 )
 
 enum class ColorThemeType {
+    AETHER,
     DYNAMIC,
     EMBERMIRE,
     VELVET_ROSE,

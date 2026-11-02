@@ -622,6 +622,7 @@ fun ZalithLauncherTheme(
             }
 
             darkTheme -> when (colorTheme) {
+                ColorThemeType.AETHER -> aetherDark
                 ColorThemeType.EMBERMIRE -> embermireDark
                 ColorThemeType.VELVET_ROSE -> velvetRoseDark
                 ColorThemeType.MISTWAVE -> mistwaveDark
@@ -633,10 +634,11 @@ fun ZalithLauncherTheme(
                     color = customColor,
                     style = customPaletteStyle
                 )
-                else -> embermireDark
+                else -> aetherDark
             }
 
             else -> when (colorTheme) {
+                ColorThemeType.AETHER -> aetherLight
                 ColorThemeType.EMBERMIRE -> embermireLight
                 ColorThemeType.VELVET_ROSE -> velvetRoseLight
                 ColorThemeType.MISTWAVE -> mistwaveLight
@@ -648,7 +650,7 @@ fun ZalithLauncherTheme(
                     color = customColor,
                     style = customPaletteStyle
                 )
-                else -> embermireLight
+                else -> aetherLight
             }
         }
     }
@@ -681,6 +683,7 @@ fun ZalithLauncherTheme(
             colorScheme = currentDisplayScheme,
             motionScheme = MotionScheme.expressive(),
             typography = AppTypography,
+            shapes = AetherShapes,
             content = content
         )
     }

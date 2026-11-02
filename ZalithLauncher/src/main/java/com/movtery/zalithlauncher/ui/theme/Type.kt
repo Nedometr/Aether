@@ -19,5 +19,33 @@
 package com.movtery.zalithlauncher.ui.theme
 
 import androidx.compose.material3.Typography
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 
-val AppTypography = Typography()
+private val base = Typography()
+
+/** Aether tipografisi: başlıklarda sıkı ve kalın, etiketlerde geniş aralık */
+val AppTypography = Typography(
+    displayLarge = base.displayLarge.copy(fontWeight = FontWeight.Bold, letterSpacing = (-1).sp),
+    displayMedium = base.displayMedium.copy(fontWeight = FontWeight.Bold, letterSpacing = (-0.5).sp),
+    displaySmall = base.displaySmall.copy(fontWeight = FontWeight.SemiBold),
+    headlineLarge = base.headlineLarge.copy(fontWeight = FontWeight.SemiBold),
+    headlineMedium = base.headlineMedium.copy(fontWeight = FontWeight.SemiBold),
+    headlineSmall = base.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
+    titleLarge = base.titleLarge.copy(fontWeight = FontWeight.SemiBold),
+    titleMedium = base.titleMedium.copy(fontWeight = FontWeight.SemiBold, letterSpacing = 0.15.sp),
+    titleSmall = base.titleSmall.copy(fontWeight = FontWeight.Medium),
+    labelLarge = base.labelLarge.copy(fontWeight = FontWeight.SemiBold, letterSpacing = 0.6.sp),
+    labelMedium = base.labelMedium.copy(letterSpacing = 0.8.sp),
+    labelSmall = base.labelSmall.copy(letterSpacing = 1.sp),
+)
+
+/** "AETHER" yazısı için */
+val AetherWordmark = TextStyle(
+    fontFamily = FontFamily.SansSerif,
+    fontWeight = FontWeight.Light,
+    fontSize = 34.sp,
+    letterSpacing = 10.sp,
+)

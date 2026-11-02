@@ -97,6 +97,7 @@ object HomeCards {
 
     /** 系统卡片（不可变更） */
     fun systemCards(): List<SystemCard> = buildList {
+        add(SystemCard(id = "system_aether_hero") { AetherHeroCard() })
         if (BuildConfig.DEBUG) {
             add(debugWarningCard())
         }
