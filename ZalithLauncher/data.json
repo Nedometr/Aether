@@ -1,0 +1,18 @@
+{
+  "version": "2026/11/03",
+  "files": [
+    {
+      "effective_region": "global",
+      "data_list": [
+        {
+          "title": "Aether User Agreement",
+          "path": "legal/en/user_agreement.md"
+        },
+        {
+          "title": "Aether Privacy Policy",
+          "path": "legal/en/privacy_policy.md"
+        }
+      ]
+    }
+  ]
+}
