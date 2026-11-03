@@ -123,6 +123,8 @@ class LauncherUpgradeViewModel: ViewModel() {
     fun checkOnAppStart(
         onIsLatest: suspend () -> Unit = {}
     ) {
+        //Aether: resmî Zalith güncellemelerini sunma
+        if (true) return
         viewModelScope.launch {
             if (
                 isWithinRateLimit(
@@ -159,6 +161,8 @@ class LauncherUpgradeViewModel: ViewModel() {
         onInProgress: suspend () -> Unit = {},
         onIsLatest: suspend () -> Unit = {}
     ): Boolean {
+        //Aether: resmî Zalith güncellemelerini sunma
+        if (true) { onIsLatest(); return true }
         return checkMutex.withLock {
             if (
                 isWithinRateLimit(
