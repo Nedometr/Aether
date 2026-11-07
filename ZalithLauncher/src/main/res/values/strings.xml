@@ -128,7 +128,7 @@
     <!-- Option of the theme color setting in launcher settings -->
     <string name="theme_color_aether">Aether</string>
     <string name="aether_tagline">Gökyüzünün ötesine başlat.</string>
-    <string name="aether_unofficial">Resmî olmayan değiştirilmiş sürüm · Zalith Launcher 2 tabanlı</string>
+    <string name="aether_unofficial">Resmi Aether Launcher 1.0 sürümü</string>
     <string name="theme_color_dynamic">Dynamic (Android 12+)</string>
     <!-- Option of the theme color setting in launcher settings -->
     <string name="theme_color_embermire">Embermire</string>
