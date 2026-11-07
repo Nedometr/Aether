@@ -343,6 +343,9 @@ private fun List<MinecraftVersion>.filterVersions(
         old = versionFilter.old
     )
 }.filter { version ->
+    //Aether: 26.x sürümlerini gizle
+    !version.version.id.startsWith("26.")
+}.filter { version ->
     //Fix：单独过滤版本名称
     val versionId = versionFilter.id
     versionId.isEmptyOrBlank() || version.version.id.contains(versionId)
