@@ -122,3 +122,46 @@ data class Account(
         }
     }
 }
+    private suspend fun updateCape(url: String) {
+        val targetFile = getCapeFile()
+        val tempFile = getTempCapeFile()
+
+        runCatching {
+            FileUtils.deleteQuietly(tempFile)
+            CapeFileDownloader().download(url, tempFile, profileId)
+            if (targetFile.exists()) FileUtils.deleteQuietly(targetFile)
+            FileUtils.moveFile(tempFile, targetFile)
+            Logger.info(TAG, "Update cape success")
+        }.onFailure { e ->
+            Logger.error(TAG, "Could not update cape", e)
+            FileUtils.deleteQuietly(tempFile)
+        }
+    }
+
+    // --- BURADAN AŞAĞISINI YAPIŞTIRABILIRSIN ---
+
+    /**
+     * Bu hesabın offline (crack) olup olmadığını kontrol eder.
+     */
+    fun isOfflineAccount(): Boolean {
+        return accountType.isNullOrEmpty() || accountType == "offline" || accountType == "local"
+    }
+
+    /**
+     * Eğer hesap offline ise isme özel sabit UUID üretir, değilse gerçek profileId'yi döner.
+     */
+    fun getEffectiveUUID(): String {
+        return if (isOfflineAccount()) {
+            UUID.nameUUIDFromBytes("OfflinePlayer:$username".toByteArray(Charsets.UTF_8)).toString().lowercase()
+        } else {
+            profileId
+        }
+    }
+
+    /**
+     * Oyuna gönderilecek Access Token'ı belirler. Offline hesaplar için "0" döner.
+     */
+    fun getEffectiveAccessToken(): String {
+        return if (isOfflineAccount()) "0" else accessToken
+    }
+}
