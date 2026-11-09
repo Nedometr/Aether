@@ -241,11 +241,6 @@ class LaunchArgs(
     }
 
     private fun getMinecraftJVMArgs(): Array<String> {
-//        // Parse Forge 1.17+ additional JVM Arguments
-//        if (versionInfo.inheritsFrom == null || versionInfo.arguments == null || versionInfo.arguments.jvm == null) {
-//            return emptyArray()
-//        }
-
         val varArgMap: MutableMap<String, String> = android.util.ArrayMap()
         val launchClassPath = buildList {
             add(getLWJGL3ClassPath())
@@ -297,9 +292,6 @@ class LaunchArgs(
         }
     }
 
-    /**
-     * [Modified from PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher/blob/a6f3fc0/app_pojavlauncher/src/main/java/net/kdt/pojavlaunch/Tools.java#L572-L592)
-     */
     private fun MutableList<String>.putLaunchClassPath(gameManifest: GameManifest) {
         val classpath: Array<String> = generateLibClasspath(gameManifest)
 
@@ -316,9 +308,6 @@ class LaunchArgs(
         }
     }
 
-    /**
-     * [Modified from PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher/blob/a6f3fc0/app_pojavlauncher/src/main/java/net/kdt/pojavlaunch/Tools.java#L871-L882)
-     */
     private fun generateLibClasspath(gameManifest: GameManifest): Array<String> {
         val libSortFix = LibSortFix()
         val libs = LinkedHashMap<GameManifest.Library, String>()
@@ -334,10 +323,6 @@ class LaunchArgs(
         return libs.values.toTypedArray<String>()
     }
 
-
-    /**
-     * @return 库相对路径
-     */
     private fun GameManifest.Library.progressLibrary(): String? {
         if (filterLibrary()) return null
 
@@ -356,17 +341,21 @@ class LaunchArgs(
 
     private fun getMinecraftClientArgs(): Array<String> {
         val varArgMap: MutableMap<String, String> = ArrayMap()
-        varArgMap["auth_session"] = account.accessToken
-        varArgMap["auth_access_token"] = account.accessToken
+        
+        // GÜNCELLENEN KISIM: Crack hesaplar için güvenli token ve UUID kullanılıyor
+        varArgMap["auth_session"] = account.getEffectiveAccessToken()
+        varArgMap["auth_access_token"] = account.getEffectiveAccessToken()
         varArgMap["auth_player_name"] = account.username
-        varArgMap["auth_uuid"] = account.profileId.replace("-", "")
+        varArgMap["auth_uuid"] = account.getEffectiveUUID().replace("-", "")
         varArgMap["auth_xuid"] = account.xUid ?: ""
         varArgMap["assets_root"] = getAssetsHome(version.getGameHome())
         varArgMap["assets_index_name"] = gameManifest.assetIndex.id
         varArgMap["game_assets"] = getAssetsHome(version.getGameHome())
         varArgMap["game_directory"] = gameDirPath.absolutePath
         varArgMap["user_properties"] = "{}"
-        varArgMap["user_type"] = "msa"
+        
+        // GÜNCELLENEN KISIM: Hesap crack ise user_type "legacy" yapılır
+        varArgMap["user_type"] = if (account.isOfflineAccount()) "legacy" else "msa"
         varArgMap["version_name"] = gameManifest.id
 
         setLauncherInfo(varArgMap)
@@ -402,12 +391,6 @@ class LaunchArgs(
     }
 }
 
-/**
- * 从版本清单中探测要求的 LWJGL 主版本
- * 解析 `org.lwjgl:lwjgl:X.Y.Z` / `org.lwjgl.lwjgl:lwjgl:X.Y.Z` 坐标，
- * 返回去掉句点后的整数（如 3.3.3→333、3.4.1→341、2.9.9→299）
- * @return 无法确定时返回 0（默认按 LWJGL3 处理）
- */
 fun detectLwjglVersion(manifest: GameManifest): Int {
     for (lib in manifest.libraries) {
         val name = lib.name ?: continue
@@ -425,8 +408,4 @@ fun detectLwjglVersion(manifest: GameManifest): Int {
     return 0
 }
 
-/**
- * LWJGL 版本整数 -> 组件目录名。
- * 版本 >= 3.4.1 -> 3.4.1 组件；否则（含 LWJGL2 桥接场景）-> 3.3.3 组件
- */
 fun lwjglVersionDir(lwjglVersion: Int): String = if (lwjglVersion >= 341) "3.4.1" else "3.3.3"
