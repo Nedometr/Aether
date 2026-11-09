@@ -121,24 +121,6 @@ data class Account(
             FileUtils.deleteQuietly(tempFile)
         }
     }
-}
-    private suspend fun updateCape(url: String) {
-        val targetFile = getCapeFile()
-        val tempFile = getTempCapeFile()
-
-        runCatching {
-            FileUtils.deleteQuietly(tempFile)
-            CapeFileDownloader().download(url, tempFile, profileId)
-            if (targetFile.exists()) FileUtils.deleteQuietly(targetFile)
-            FileUtils.moveFile(tempFile, targetFile)
-            Logger.info(TAG, "Update cape success")
-        }.onFailure { e ->
-            Logger.error(TAG, "Could not update cape", e)
-            FileUtils.deleteQuietly(tempFile)
-        }
-    }
-
-    // --- BURADAN AŞAĞISINI YAPIŞTIRABILIRSIN ---
 
     /**
      * Bu hesabın offline (crack) olup olmadığını kontrol eder.
